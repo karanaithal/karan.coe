@@ -1,0 +1,121 @@
+/*Program to implement Stack using Circular  List*/
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+	int info;
+	struct node *next;
+};
+
+typedef struct node NODE ;
+NODE * last = NULL;
+NODE * getnode()
+{
+	NODE * x;
+
+	x = (NODE *) malloc(sizeof(NODE));
+
+	if(x == NULL)
+	{
+		printf("Cannot create node\n");
+		return NULL;
+	}
+
+	return x;
+}
+
+void freenode(NODE * x)
+{
+	free(x);
+}
+
+void push(int item)
+{
+	NODE * temp;
+
+	temp = getnode();
+	temp->info = item;
+
+	if(last == NULL)
+	{
+		last = temp;
+		last->next = last;
+    }
+    else
+    {
+
+	temp->next = last->next;
+	last->next = temp;
+    }
+}
+
+void pop()
+{
+	NODE * first;
+	if(last == NULL)
+			printf("Stack Underflow\n");
+    else if(last->next == last)
+	{
+		printf("The item deleted is %d\n", last->info);
+		freenode(last);
+		last=NULL;
+    }
+    else
+    {
+    first = last->next;
+	printf("Item deleted is %d\n", first->info);
+	last->next = first->next;
+	freenode(first);
+    }
+}
+
+void display()
+{
+	NODE * temp;
+	if(last == NULL)
+	{
+		printf("Stack Empty\n");
+		return;
+	}
+    printf("Stack Contents\n");
+	temp = last->next;
+	while(temp != last)
+	{
+		printf("%d\n", temp->info);
+		temp = temp->next;
+	}
+	printf("%d\n", temp->info);
+}
+
+void main()
+{
+	int choice, item;
+	printf("Stacks using Circular  List\n");
+	printf("push  and pop at front of the list\n");
+
+	for(;;)
+	{
+		printf("1. Push\n2. Pop\n3. Display\n4. Exit\n");
+		printf("Choice:\t");
+		scanf("%d", &choice);
+
+		switch(choice)
+		{
+			case 1:
+				printf("Enter the item to be inserted:\t");
+				scanf("%d", &item);
+				push(item);
+				break;
+			case 2:
+				pop();
+				break;
+			case 3:
+				display();
+				break;
+			default:
+				exit(0);
+		}
+	}
+}
