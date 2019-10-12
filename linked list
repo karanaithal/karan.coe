@@ -1,0 +1,165 @@
+/*Write a program to create a singly linked list that maintains a list of integers. Implement the following operations on the list.
+a) Insert a new element at front end and delete an element at front end
+b)Insert a new element at rear end and delete an element at rear end*/
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int info;
+	struct node *next;
+};
+
+typedef struct node NODE;
+
+
+void insert_front(int);
+void del_front();
+void display();
+NODE* head;
+NODE* getnode();
+void main()
+{
+	int data,choice;
+    for(;;)
+	{
+		printf("\n select  operation :\n");
+		printf("1:insert front\n2:delete front\n 3:insert rear\n");
+         printf("4:delete rear\n 5:Display\n6:EXIT\n");
+		scanf("%d",&choice);
+        switch(choice)
+	    {
+		case 1: printf("enter the data:\n");
+	            scanf("%d",&data);
+		        insert_front(data);
+                break;
+		case 2: del_front();
+		        break;
+        case 3: printf("enter the data:\n");
+	            scanf("%d",&data);
+		        insert_rear(data);
+                break;
+		case 4: del_rear();
+		        break;
+
+		case 5: display();
+                break;
+		case 6: printf("END\n");
+		        return;
+		        //break;
+		default: printf("please enter correct choice\n");
+	   }
+
+	}
+}
+
+//end of main()----------------------------------------------------------------
+//getnode()
+NODE* getnode()
+{
+    NODE* n;
+    n=(NODE *)malloc(sizeof(NODE));
+    if(n==NULL)
+    {
+        printf("node not allocated\n");
+        return;
+    }
+    else
+        return n;
+}
+void insert_front(int item)
+{
+	NODE *n;
+	n=getnode();
+    n->info=item;
+	n->next=NULL;
+    if(head==NULL)
+	head=n;
+    else
+    {
+	n->next=head;
+	head=n;
+    }
+
+}
+
+//---end of insert()------------------------------------------------
+void del_front()
+{
+    NODE* temp;
+	if(head==NULL)
+		printf("List Underflow\n");
+    else
+    {
+        temp=head;
+        head=head->next;
+        printf("Info of deleted node=%d", temp->info);
+        free(temp);
+    }
+
+}
+void insert_rear(int item)
+{
+
+	NODE*  n; NODE* temp=head;
+	n=getnode();
+	n->info=item;
+	n->next=NULL;
+    if(head==NULL)
+	head=n;
+    else
+    {
+        while(temp->next!=NULL)
+            temp=temp->next;
+	    temp->next=n;
+	}
+
+}
+
+//---end of insert()------------------------------------------------
+void del_rear()
+{
+    NODE* temp;
+    NODE* pred=NULL;
+	if(head==NULL)
+		printf("empty\n");
+    else if(head->next==NULL)
+    {
+         printf("Info of deleted node=%d", head->info);
+         head=NULL;
+    }
+    else
+    {
+        temp=head;
+         while(temp->next!=NULL){
+            pred=temp;
+            temp=temp->next;
+         }
+        printf("Info of deleted node=%d", temp->info);
+        free(temp);
+         pred->next=NULL;
+    }
+
+}
+//-end of delete()-------------------------------------------------------
+
+void display()
+{
+	NODE *temp=head;
+	if(head==NULL)
+	{
+		printf("EMPTY LIST\n");
+		return;
+	}
+
+	printf("List contents\n");
+
+	while(temp!=NULL)
+	{
+		printf("%d\t",temp->info);
+		temp=temp->next;
+	}
+
+	}
